@@ -1138,3 +1138,8 @@ func (a *API) ListInterestGroupings(parameters map[string]interface{}) (retVal [
 	err = parseJson(a, "listInterestGroupings", parameters, &retVal)
 	return
 }
+
+// Subscribe the provided email to a list.
+func (a *API) ListSubscribe(parameters map[string]interface{}) (bool, error) {
+	return parseBoolean(run(a, "listSubscribe", parameters))
+}
