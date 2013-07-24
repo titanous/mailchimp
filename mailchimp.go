@@ -22,7 +22,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 	"strconv"
 	"time"
@@ -56,7 +55,6 @@ func run(a *API, method string, parameters map[string]interface{}) ([]byte, erro
 	if err != nil {
 		return nil, err
 	}
-	//os.Stdout.Write([]byte(b))
 	resp, err := http.Post(a.endpoint+method, "application/json", bytes.NewBuffer(b))
 	if err != nil {
 		return nil, err
@@ -66,7 +64,6 @@ func run(a *API, method string, parameters map[string]interface{}) ([]byte, erro
 	if err != nil {
 		return nil, err
 	}
-	os.Stdout.Write(body)
 	if err = errorCheck(body); err != nil {
 		return nil, err
 	}
@@ -157,8 +154,6 @@ func parseJson(a *API, method string, parameters map[string]interface{}, retVal 
 	}
 	switch r := retVal.(type) {
 	case alterJsoner:
-		blob := r.alterJson(body)
-		os.Stdout.Write(blob)
 		json.Unmarshal(r.alterJson(body), retVal)
 	default:
 		json.Unmarshal(body, retVal)
