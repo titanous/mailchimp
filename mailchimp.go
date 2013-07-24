@@ -1009,6 +1009,7 @@ type ListBatchUnsubsribeResponse struct {
 		Message string
 	}
 }
+
 //ListBatchUnsubscribe unsubscribes a batch of email addresses from a list
 //http://apidocs.mailchimp.com/api/1.3/listbatchunsubscribe.func.php
 func (a *API) ListBatchUnsubscribe(parameters map[string]interface{}) (retVal *ListBatchUnsubsribeResponse, err error) {
@@ -1067,7 +1068,9 @@ type ListGrowthHistoryElement struct {
 	Imports  int
 	Optins   int
 }
+
 var listGrowthHistoryRX = regexp.MustCompile(`"(existing|imports|optins)":"([0-9]*)"`)
+
 func (r *ListGrowthHistoryResponse) alterJson(b []byte) []byte {
 	return listGrowthHistoryRX.ReplaceAll(b, []byte(`"$1":$2`))
 }
@@ -1087,7 +1090,7 @@ func (a *API) ListInterestGroupAdd(parameters map[string]interface{}) (bool, err
 }
 
 //ListInterestGroupDel deletes a single interest group and turns off groups
-//for the list if it was the last group.  
+//for the list if it was the last group.
 //http://apidocs.mailchimp.com/api/1.3/listinterestgroupdel.func.php
 func (a *API) ListInterestGroupDel(parameters map[string]interface{}) (bool, error) {
 	return parseBoolean(run(a, "listInterestGroupDel", parameters))
@@ -1107,30 +1110,31 @@ func (a *API) ListInterestGroupingAdd(parameters map[string]interface{}) (int, e
 
 //ListInterestGroupingUpdate updates an existing interest grouping
 func (a *API) ListInterestGroupingUpdate(parameters map[string]interface{}) (bool, error) {
-  return parseBoolean(run(a, "listInterestGroupingUpdate", parameters))
+	return parseBoolean(run(a, "listInterestGroupingUpdate", parameters))
 }
 
 //ListInterestGroupingDel deletes an existing interest grouping, including all
 //contained interest groups
 func (a *API) ListInterestGroupingDel(parameters map[string]interface{}) (bool, error) {
-  return parseBoolean(run(a, "listInterestGroupingDel", parameters))
+	return parseBoolean(run(a, "listInterestGroupingDel", parameters))
 }
 
 //ListInterestGroupingsElement is the type of elements in the slice returned from the ListActivity method
 type ListInterestGroupingsElement struct {
-  Id int
-  Name string
-  Form_fields string
-  Groups []struct {
-    Bit string
-    Name string
-    Display_order string
-    Subscribers int
-  }
+	Id          int
+	Name        string
+	Form_fields string
+	Groups      []struct {
+		Bit           string
+		Name          string
+		Display_order string
+		Subscribers   int
+	}
 }
+
 //ListInterestGroupings gets the list of interest groupings for a given list,
 //including the lable, form information, and included groups for each
 func (a *API) ListInterestGroupings(parameters map[string]interface{}) (retVal []ListInterestGroupingsElement, err error) {
-  err = parseJson(a, "listInterestGroupings", parameters, &retVal)
-  return
+	err = parseJson(a, "listInterestGroupings", parameters, &retVal)
+	return
 }
